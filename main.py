@@ -4,7 +4,7 @@ import time
 
 # --- SETUP ---
 st.set_page_config(page_title="Smile Crafters Assistant", page_icon="🦷")
-st.title("🦷 Smile Crafters AI")
+st.title("🦷 Smile Crafters Cusstomer Support")
 
 # --- API KEY (FIXED FOR STREAMLIT SECRETS) ---
 # This line now correctly pulls the key from your Secrets box
