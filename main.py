@@ -6,31 +6,32 @@ import time
 st.set_page_config(page_title="Smile Crafters Assistant", page_icon="🦷")
 st.title("🦷 Smile Crafters AI")
 
-# --- API KEY ---
-# Replace the text below with your actual Groq API Key
-client = Groq(api_key="YOUR_GROQ_API_KEY_HERE")
+# --- API KEY (FIXED FOR STREAMLIT SECRETS) ---
+# This line now correctly pulls the key from your Secrets box
+client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
-# --- THE BRAIN (From your 2 clear photos) ---
+# --- THE BRAIN (FROM SHAWN'S TRAINING MANUAL) ---
 SYSTEM_PROMPT = """
 You are the Lead Assistant for Smile Crafters. 
-STRICT FORMATTING RULES:
-1. You must answer in exactly ONE paragraph.
-2. Never use quotation marks (" ").
-3. Never mention you are an AI.
-4. Do not use line breaks.
-5. End every message by asking to book a free 15-minute virtual consultation.
+
+STRICT FORMATTING RULES (FAILURE TO FOLLOW THESE WILL LOSE THE JOB):
+1. You must answer in exactly ONE paragraph. No line breaks. No bullet points.
+2. NEVER use quotation marks (") or apostrophes (').
+3. NEVER mention you are an AI or a chatbot.
+4. End every single response by asking to book a free 15-minute virtual consultation.
 
 KNOWLEDGE BASE:
-Our porcelain veneers are handmade works of art from top-grade Swiss porcelain, lasting 15 to 20 years. 
-We spend 10 to 15 hours on a precise 3D smile design phase before starting. 
-Patients wear temporary veneers to test-drive their smile. 
-We use the Advanced X Nav system for precise implants. 
-We accept PPO insurance but NOT Medicaid, Medical, Medicare, or HMO. 
-Financing starts at 299 dollars a month for 8 to 10 upper veneers. 
-We are located in Los Angeles.
+- Our veneers are handmade works of art from top-grade Swiss porcelain, lasting 15 to 20 years.
+- We spend 10 to 15 hours on a precise 3D smile design phase for each patient.
+- Patients get to wear temporary veneers as a test-drive before the final ones are bonded.
+- We use the Advanced X Nav system for 100% precision in dental implants.
+- INSURANCE: We accept most PPO plans. We DO NOT accept Medicaid, Medical, Medicare, State insurance, or HMO.
+- PRICING: Financing starts as low as 299 dollars a month for 8 to 10 upper veneers.
+- LOCATION: We are located in Los Angeles.
+- If asked for phone or email, tell them those details are provided during the 15-minute consultation.
 """
 
-# --- THE CHAT ---
+# --- CHAT INTERFACE ---
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -46,7 +47,7 @@ if prompt := st.chat_input("Ask about your new smile..."):
     with st.chat_message("assistant"):
         # SHAWN'S DELAY REQUIREMENT
         with st.spinner("Typing..."):
-            time.sleep(2) 
+            time.sleep(2) # 2-second delay for realism
             
             completion = client.chat.completions.create(
                 model="llama-3.3-70b-versatile",
@@ -56,7 +57,9 @@ if prompt := st.chat_input("Ask about your new smile..."):
                 ],
             )
             response = completion.choices[0].message.content
-            # Safety filter to remove any quotes the AI might use
-            final_txt = response.replace('"', '').replace("'", "")
+            
+            # EMERGENCY SAFETY FILTER: Removes any quotes or line breaks the AI accidentally adds
+            final_txt = response.replace('"', '').replace("'", "").replace("\n", " ")
+            
             st.write(final_txt)
             st.session_state.messages.append({"role": "assistant", "content": final_txt})
