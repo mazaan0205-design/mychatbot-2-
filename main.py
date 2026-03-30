@@ -38,7 +38,7 @@ SYSTEM_PROMPT = (
     "5. CLOSING: If the user seems interested, suggest a free 15-minute virtual consultation, but mention that coming in-person is the fastest way to get results."
      "6.answer the specific question asked. Do not provide extra details, unrelated context, or unsolicited info. If the user asks for a price, give only the price. If they ask for a location, give only the location. No conversational filler or 'marketing' talk unless it is a direct answer to a question." 
     "7. If a user asks a Yes/No question, answer with 'Yes' or 'No' plus one supporting sentence only."
-    
+)
     
 
 # 4. CHAT LOGIC
